@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Global Cyber Incident Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <style>
+        html, body, #map {width: 100%; height: 100%; margin: 0; padding: 0;}
+        .leaflet-popup-content h4 { margin: 5px 0; color: #1a365d; font-family: sans-serif; }
+        .leaflet-popup-content p { margin: 5px 0; font-family: sans-serif; font-size: 13px; color: #333; line-height: 1.4; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        // Center map globally
+        var map = L.map('map').setView([25, 10], 2);
+        
+        // Load beautiful clean background layer
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap &copy; CARTO'
+        }).addTo(map);
+
+        // Color Icons Logic (Red = Violation, Orange = Questionable, Green = Defensive Policy)
+        function createCustomIcon(color) {
+            return new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-' + color + '.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
+            });
+        }
+
+        // Compilation of Elisheva's 10 Global Cybersecurity Research Incidents
+        var incidents = [
+            { name: "2023 Microsoft Exchange Online Email Breach", coords: [38.8951, -77.0364], color: "red", desc: "<b>Attacker:</b> Storm-0558 (China-linked)<br><b>Vector:</b> Token-forging exploit.<br><b>Impact:</b> Focused espionage against U.S. State and Commerce Dept accounts [Tier 2]." },
+            { name: "2024 Operation FlightNight", coords: [28.6139, 77.2090], color: "orange", desc: "<b>Attacker:</b> Unknown Uncategorized Actor<br><b>Vector:</b> Indian Air Force phishing decoy.<br><b>Impact:</b> Exfiltrated 8.81 GB of defense and energy sector data via Slack channels [Tier 2]." },
+            { name: "2024 Cyber Military Branch Elevation (CIR)", coords: [52.5200, 13.4050], color: "green", desc: "<b>Policy Measure:</b> Elevated Cyber and Information Domain Service to full military status.<br><b>Objective:</b> Streamlining NATO defensive readiness against regional hybrid warfare." },
+            { name: "2024 NATO-Aligned Outlook Espionage Campaign", coords: [50.0755, 14.4378], color: "red", desc: "<b>Attacker:</b> APT28 / Fancy Bear (Russian GRU)<br><b>Vector:</b> Microsoft Outlook CVE-2023-23397 zero-day flaw.<br><b>Impact:</b> Systematic breach of central European government infrastructure [Tier 2]." },
+            { name: "2024 Poseidon Malware Deployment", coords: [22.5726, 88.3639], color: "orange", desc: "<b>Attacker:</b> Transparent Tribe / APT36 (Pakistan-linked)<br><b>Vector:</b> Cross-platform multi-stage phishing loaders.<br><b>Impact:</b> Targeted defense & aerospace research networks [Tier 2]." },
+            { name: "2024 Infiltration of Palau Government Records", coords: [7.3419, 134.4779], color: "red", desc: "<b>Attacker:</b> China-linked state sponsored hackers.<br><b>Impact:</b> Theft of 20,000+ government documents directly following a 20-year security pact with the United States [Tier 2]." },
+            { name: "2024 South Korean Covert Agent Identity Leak", coords: [37.5665, 126.9780], color: "orange", desc: "<b>Vector:</b> Internal security breach (Classified files copied to personal laptop).<br><b>Impact:</b> Compromised operational safety of undercover 'black agents' working overseas." },
+            { name: "2024 Ukrainian Strike on Russian Judicial Networks", coords: [55.7558, 37.6173], color: "red", desc: "<b>Attacker:</b> Blackjack (Pro-Ukrainian Group)<br><b>Impact:</b> Parallel shutdown of state TV streaming and Russia's national court filing network on Putin's birthday [Tier 2]." },
+            { name: "2024 Earth Simnavaz (APT34) Gulf Espionage", coords: [24.4539, 54.3773], color: "red", desc: "<b>Attacker:</b> OilRig / APT34 (Iran-linked)<br><b>Vector:</b> StealHook backdoor via Exchange servers.<br><b>Impact:</b> Infrastructure credential harvesting across public administrations [Tier 2]." },
+            { name: "2024 Introduction of National Cyber Security Bill", coords: [-35.2809, 149.1300], color: "green", desc: "<b>Policy Measure:</b> Introduced structural cybersecurity requirements including mandatory 72-hour ransomware incident logging and smart-device standards [Tier 1]." }
+        ];
+
+        // Map deployment iteration loop
+        incidents.forEach(function(item) {
+            var popupContent = "<h4>" + item.name + "</h4><p>" + item.desc + "</p>";
+            L.marker(item.coords, { icon: createCustomIcon(item.color) })
+             .bindPopup(popupContent)
+             .addTo(map);
+        });
+    </script>
+</body>
+</html>
